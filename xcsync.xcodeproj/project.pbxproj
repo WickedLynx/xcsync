@@ -7,13 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12B7B857A5ADE39923E43FEF /* Pods_xcsync.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936689473DFB6A3398C708FF /* Pods_xcsync.framework */; };
 		FABBAEEE2079E966005808A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABBAEED2079E966005808A1 /* AppDelegate.swift */; };
 		FABBAEF02079E966005808A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FABBAEEF2079E966005808A1 /* Assets.xcassets */; };
 		FABBAEF32079E966005808A1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FABBAEF12079E966005808A1 /* MainMenu.xib */; };
 		FABBAEFC2079EC31005808A1 /* nyancat.gif in Resources */ = {isa = PBXBuildFile; fileRef = FABBAEFB2079EC12005808A1 /* nyancat.gif */; };
+		FABBAF002079EFCB005808A1 /* XcodeProjAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABBAEFE2079EFCB005808A1 /* XcodeProjAdditions.swift */; };
+		FABBAF012079EFCC005808A1 /* XCSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABBAEFF2079EFCB005808A1 /* XCSync.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		657DE4886CCBD3888C08E4D5 /* Pods-xcsync.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xcsync.debug.xcconfig"; path = "Pods/Target Support Files/Pods-xcsync/Pods-xcsync.debug.xcconfig"; sourceTree = "<group>"; };
+		936689473DFB6A3398C708FF /* Pods_xcsync.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_xcsync.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB132B685AAEB4E967071722 /* Pods-xcsync.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xcsync.release.xcconfig"; path = "Pods/Target Support Files/Pods-xcsync/Pods-xcsync.release.xcconfig"; sourceTree = "<group>"; };
 		FABBAEEA2079E966005808A1 /* xcsync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = xcsync.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FABBAEED2079E966005808A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FABBAEEF2079E966005808A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -21,6 +27,8 @@
 		FABBAEF42079E966005808A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FABBAEF52079E966005808A1 /* xcsync.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = xcsync.entitlements; sourceTree = "<group>"; };
 		FABBAEFB2079EC12005808A1 /* nyancat.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = nyancat.gif; sourceTree = "<group>"; };
+		FABBAEFE2079EFCB005808A1 /* XcodeProjAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeProjAdditions.swift; sourceTree = "<group>"; };
+		FABBAEFF2079EFCB005808A1 /* XCSync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCSync.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,17 +36,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12B7B857A5ADE39923E43FEF /* Pods_xcsync.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		05F0E820AB62729B77F45C4D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				657DE4886CCBD3888C08E4D5 /* Pods-xcsync.debug.xcconfig */,
+				BB132B685AAEB4E967071722 /* Pods-xcsync.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		87131D0383520B2E0D9145A7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				936689473DFB6A3398C708FF /* Pods_xcsync.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FABBAEE12079E966005808A1 = {
 			isa = PBXGroup;
 			children = (
 				FABBAEEC2079E966005808A1 /* xcsync */,
 				FABBAEEB2079E966005808A1 /* Products */,
+				05F0E820AB62729B77F45C4D /* Pods */,
+				87131D0383520B2E0D9145A7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -53,12 +81,22 @@
 		FABBAEEC2079E966005808A1 /* xcsync */ = {
 			isa = PBXGroup;
 			children = (
+				FABBAEFD2079EFCB005808A1 /* xcsync */,
 				FABBAEFB2079EC12005808A1 /* nyancat.gif */,
 				FABBAEED2079E966005808A1 /* AppDelegate.swift */,
 				FABBAEEF2079E966005808A1 /* Assets.xcassets */,
 				FABBAEF12079E966005808A1 /* MainMenu.xib */,
 				FABBAEF42079E966005808A1 /* Info.plist */,
 				FABBAEF52079E966005808A1 /* xcsync.entitlements */,
+			);
+			path = xcsync;
+			sourceTree = "<group>";
+		};
+		FABBAEFD2079EFCB005808A1 /* xcsync */ = {
+			isa = PBXGroup;
+			children = (
+				FABBAEFE2079EFCB005808A1 /* XcodeProjAdditions.swift */,
+				FABBAEFF2079EFCB005808A1 /* XCSync.swift */,
 			);
 			path = xcsync;
 			sourceTree = "<group>";
@@ -70,9 +108,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FABBAEF82079E966005808A1 /* Build configuration list for PBXNativeTarget "xcsync" */;
 			buildPhases = (
+				2C3C4D30C685826F0AC1A01B /* [CP] Check Pods Manifest.lock */,
 				FABBAEE62079E966005808A1 /* Sources */,
 				FABBAEE72079E966005808A1 /* Frameworks */,
 				FABBAEE82079E966005808A1 /* Resources */,
+				5708DC257BFCAC1DA57EA7EB /* [CP] Embed Pods Frameworks */,
+				F6DABF90F2B0C1DC2307CC8B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -130,11 +171,71 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2C3C4D30C685826F0AC1A01B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-xcsync-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5708DC257BFCAC1DA57EA7EB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-xcsync/Pods-xcsync-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AEXML/AEXML.framework",
+				"${BUILT_PRODUCTS_DIR}/PathKit/PathKit.framework",
+				"${BUILT_PRODUCTS_DIR}/xcproj/xcproj.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AEXML.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PathKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/xcproj.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-xcsync/Pods-xcsync-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F6DABF90F2B0C1DC2307CC8B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-xcsync/Pods-xcsync-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		FABBAEE62079E966005808A1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FABBAF012079EFCC005808A1 /* XCSync.swift in Sources */,
+				FABBAF002079EFCB005808A1 /* XcodeProjAdditions.swift in Sources */,
 				FABBAEEE2079E966005808A1 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,6 +362,7 @@
 		};
 		FABBAEF92079E966005808A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 657DE4886CCBD3888C08E4D5 /* Pods-xcsync.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = xcsync/xcsync.entitlements;
@@ -276,6 +378,7 @@
 		};
 		FABBAEFA2079E966005808A1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB132B685AAEB4E967071722 /* Pods-xcsync.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = xcsync/xcsync.entitlements;

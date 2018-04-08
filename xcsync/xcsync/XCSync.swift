@@ -58,6 +58,30 @@ enum XCSyncError: Error {
     case incorrectArguments(String)
 }
 
+enum FileType: Int {
+    case source, resource, header
+    
+    var extensions: [String] {
+        switch self {
+        case .source:
+            return ["swift", "m"]
+            
+        case .header:
+            return ["h"]
+            
+        case .resource:
+            return []
+        }
+    }
+    
+    static func from(name: String) -> FileType {
+        guard let ext = name.components(separatedBy: CharacterSet(charactersIn: ".")).last?.lowercased() else {
+            return .resource
+        }
+        return [FileType.source, .header].filter { $0.extensions.contains(ext) }.first ?? .resource
+    }
+}
+
 extension ProcessInfo {
     struct XCSyncArguments {
         let srcRoot: String
@@ -68,7 +92,7 @@ extension ProcessInfo {
     func parseProgramArguments() throws -> XCSyncArguments {
         let parameters = arguments.filter { $0.hasPrefix("-") }
         guard parameters.count > 2 else {
-            throw XCSyncError.notEnoughArguments("\(parameters)")
+            throw XCSyncError.notEnoughArguments("\(arguments)")
         }
         let pathParameters = parameters.reduce ([String : String]()) { (partial, argument) -> [String : String] in
             var components = argument.components(separatedBy: CharacterSet(charactersIn: "="))
@@ -81,7 +105,7 @@ extension ProcessInfo {
         }
         
         guard let srcRoot = pathParameters["-srcRoot"], let projectPath = pathParameters["-projectPath"], let configurationPath = pathParameters["-configurationPath"] else {
-            throw XCSyncError.incorrectArguments("\(parameters)")
+            throw XCSyncError.incorrectArguments("\(arguments)")
         }
         return XCSyncArguments(srcRoot: srcRoot, projectPath: projectPath, configurationPath: configurationPath)
     }

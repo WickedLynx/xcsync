@@ -1,0 +1,22 @@
+[
+ {
+ "groupPath": "Boop/GoFood/Classes",
+ "filePath": "Boop/GoFood/Classes",
+ "target": "Boop"
+ },
+ {
+ "groupPath": "Boop/GoFood/Assets",
+ "filePath": "Boop/GoFood/Assets",
+ "target": "Boop"
+ },
+ {
+ "groupPath": "Boop/GoMart/GoMart/Classes",
+ "filePath": "Boop/GoMart/GoMart/Classes",
+ "target": "Boop"
+ },
+ {
+ "groupPath": "Boop/GoMart/GoMart/Supporting Files",
+ "filePath": "Boop/GoMart/GoMart/Supporting Files",
+ "target": "Boop"
+ }
+]

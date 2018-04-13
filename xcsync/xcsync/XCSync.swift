@@ -16,9 +16,10 @@ struct XCSync {
         do {
             let arguments = try processInfo.parseProgramArguments()
             try run(srcRoot: arguments.srcRoot, projectPath: arguments.projectPath, configurationPath: arguments.configurationPath)
+            print("<xcsync> All Done! 🍻 🍻 🍻 🍻 🍻")
             exit(0)
         } catch {
-            print("<xcsync> ERROR: \(error)")
+            print("<xcsync> ERROR ❌: \(error)")
             exit(1)
         }
     }

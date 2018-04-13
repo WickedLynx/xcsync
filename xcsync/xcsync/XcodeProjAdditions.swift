@@ -18,7 +18,7 @@ extension XcodeProj {
             let name = configuration.name ?? "Group"
             let parent = try parentGroup(for: configuration)
             try addGroup(named: name, rootPath: diskPath, in: parent.0, to: configuration.target)
-            print("<xcsync> Synced: \(configuration.groupPath)")
+            print("<xcsync> Synced: \(configuration.groupPath) ✅")
         }
     }
     
@@ -55,6 +55,58 @@ extension XcodeProj {
         
     }
     
+    func parseAndAddLocalizationFiles(at path: String, pathContents: [String], in parent: PBXGroup, to targetName: String) throws {
+        let availableLocalisations = pathContents.filter { $0.contains("lproj") }
+        guard let base = (availableLocalisations.filter { $0 == "Base.lproj" || $0 == "en.lproj" }.first) else { return }
+        guard let resourcesBuildPhase = pbxproj
+            .objects.nativeTargets
+            .values
+            .first(where: {$0.name == targetName})
+            .flatMap({ target -> PBXResourcesBuildPhase? in
+                return pbxproj.objects.resourcesBuildPhases.first(where: { target.buildPhases.contains($0.key) })?.value
+            }) else { return }
+        let baseDirectoryPath = (path as NSString).appendingPathComponent(base)
+        do {
+            let localisedFiles = try FileManager.default.contentsOfDirectory(atPath: baseDirectoryPath)
+            let otherLocalisations = availableLocalisations.filter { $0 != "Base.lproj" && $0 != "en.lproj" }
+            guard otherLocalisations.count > 0 else { return }
+            
+            for fileName in localisedFiles {
+                let correspondingFiles = otherLocalisations.flatMap {
+                    let fullPath = ((path as NSString).appendingPathComponent($0) as NSString).appendingPathComponent(fileName)
+                    guard FileManager.default.fileExists(atPath: fullPath) else { return nil }
+                    return ($0 as NSString).appendingPathComponent(fileName)
+                }
+                
+                guard correspondingFiles.count > 0 else { break }
+                
+                let fileRef = PBXFileReference(sourceTree: .group, name: fileName, fileEncoding: nil, explicitFileType: nil, lastKnownFileType: nil, path: (base as NSString).appendingPathComponent(fileName), includeInIndex: nil, wrapsLines: nil, usesTabs: nil, indentWidth: nil, tabWidth: nil, lineEnding: nil, languageSpecificationIdentifier: nil, xcLanguageSpecificationIdentifier: nil, plistStructureDefinitionIdentifier: nil)
+                let fileRefID = pbxproj.objects.generateReference(fileRef, fileName)
+                pbxproj.objects.addObject(fileRef, reference: fileRefID)
+
+                
+                let baseBuildFile = PBXBuildFile(fileRef: fileRefID)
+                let baseBuildFileRef = pbxproj.objects.generateReference(baseBuildFile, fileName)
+                pbxproj.objects.addObject(baseBuildFile, reference: baseBuildFileRef)
+                
+                let variantGroup = addVariantGroup(named: fileName, in: parent)
+                variantGroup.0.children.append(fileRefID)
+                
+                parent.children.append(variantGroup.1)
+                
+                resourcesBuildPhase.files.append(baseBuildFileRef)
+                
+                for counterpart in correspondingFiles {
+                    let fileRef = PBXFileReference(sourceTree: .group, name: fileName, fileEncoding: nil, explicitFileType: nil, lastKnownFileType: nil, path: counterpart, includeInIndex: nil, wrapsLines: nil, usesTabs: nil, indentWidth: nil, tabWidth: nil, lineEnding: nil, languageSpecificationIdentifier: nil, xcLanguageSpecificationIdentifier: nil, plistStructureDefinitionIdentifier: nil)
+                    let fileRefID = pbxproj.objects.generateReference(fileRef, fileName)
+                    pbxproj.objects.addObject(fileRef, reference: fileRefID)
+                    variantGroup.0.children.append(fileRefID)
+                }
+            }
+        }
+        
+    }
+    
     func addGroup(named: String, rootPath: String, in parent: PBXGroup, to targetName: String) throws {
         do {
             let result = addGroup(named: named, in: parent)
@@ -63,9 +115,11 @@ extension XcodeProj {
                 var isDirectory: ObjCBool = false
                 let fullPath = (rootPath as NSString).appendingPathComponent(path)
                 if FileManager.default.fileExists(atPath: fullPath, isDirectory: &isDirectory) {
-                    if isDirectory.boolValue && !path.contains(".xcassets") {
+                    if isDirectory.boolValue && !path.contains(".xcassets") && !path.contains("lproj") {
                         try addGroup(named: path, rootPath: fullPath, in: result.0, to: targetName)
-                    } else {
+                    } else if isDirectory.boolValue && (path == ("Base.lproj") || path == ("en.lproj")) {
+                        try parseAndAddLocalizationFiles(at: rootPath, pathContents: contents, in: result.0, to: targetName)
+                    } else if !path.contains("lproj") {
                         switch FileType.from(name: path) {
                         case .source:
                             addSourceFile(named: path, at: path, in: result.0, to: targetName)
@@ -83,17 +137,25 @@ extension XcodeProj {
     
     @discardableResult
     func addGroup(named groupName: String, in parent: PBXGroup) -> (PBXGroup, String) {
-        let foodGroup = PBXGroup(children: [], sourceTree: .group, name: groupName, path: groupName, includeInIndex: nil, wrapsLines: nil, usesTabs: nil, indentWidth: nil, tabWidth: nil)
-        let foodGroupRef = pbxproj.objects.generateReference(foodGroup, groupName)
-        parent.children.append(foodGroupRef)
-        pbxproj.objects.addObject(foodGroup, reference: foodGroupRef)
-        return (foodGroup, foodGroupRef)
+        let group = PBXGroup(children: [], sourceTree: .group, name: groupName, path: groupName, includeInIndex: nil, wrapsLines: nil, usesTabs: nil, indentWidth: nil, tabWidth: nil)
+        let groupRef = pbxproj.objects.generateReference(group, groupName)
+        parent.children.append(groupRef)
+        pbxproj.objects.addObject(group, reference: groupRef)
+        return (group, groupRef)
+    }
+    
+    func addVariantGroup(named groupName: String, in parent: PBXGroup) -> (PBXGroup, String) {
+        let groupToAdd = PBXVariantGroup(children: [], sourceTree: .group, name: groupName, path: nil, includeInIndex: nil, wrapsLines: nil, usesTabs: nil, indentWidth: nil, tabWidth: nil)
+        let groupRef = pbxproj.objects.generateReference(groupToAdd, groupName)
+        parent.children.append(groupRef)
+        pbxproj.objects.addObject(groupToAdd, reference: groupRef)
+        return (groupToAdd, groupRef)
     }
     
     func removeGroup(named groupName: String, from parent: PBXGroup) {
         for child in parent.children {
-            let foodGroups = pbxproj.objects.groups.filter { ($0.value.name == groupName || $0.value.path == groupName) && $0.key == child }
-            for (key, value) in foodGroups {
+            let groups = pbxproj.objects.groups.filter { ($0.value.name == groupName || $0.value.path == groupName) && $0.key == child }
+            for (key, value) in groups {
                 for child in value.children {
                     let element = pbxproj.objects.getFileElement(reference: child)
                     if let groupElement = element as? PBXGroup {
